@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soul Gamble | The Odds Are Objects</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    
+    <style>
+        :root {
+            --primary: #ffd700;
+            --secondary: #9b59b6;
+            --accent: #e74c3c;
+            --bg-dark: #0a0a12;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: #e8e8e8;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Fondo de Partículas */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, #1a1a3e 0%, #0a0a12 100%);
+        }
+
+        /* Header */
+        header {
+            background: rgba(13, 13, 26, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); text-decoration: none; }
+
+        .nav-links { display: flex; list-style: none; gap: 20px; }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--primary); }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 20px 60px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            color: var(--primary);
+            margin-bottom: 10px;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+        }
+
+        .subtitle { font-size: 1.5rem; color: var(--secondary); margin-bottom: 30px; }
+
+        .slogan {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--accent);
+            margin-bottom: 40px;
+            padding: 20px;
+            border-left: 4px solid var(--accent);
+            background: rgba(231, 76, 60, 0.1);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Secciones y Cards */
+        section { padding: 80px 20px; max-width: 1200px; margin: 0 auto; }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            padding: 30px;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+
+        .card:hover { transform: translateY(-5px); border-color: var(--primary); }
+
+        .card h3 { color: var(--primary); margin-bottom: 15px; }
+
+        /* Atributos */
+        .attributes-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .attribute-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(155, 89, 182, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        /* Tablas */
+        .table-container { overflow-x: auto; margin: 30px 0; border-radius: 15px; }
+
+        table { width: 100%; border-collapse: collapse; background: var(--glass); }
+
+        th { background: rgba(155, 89, 182, 0.3); color: var(--primary); padding: 15px; text-align: left; }
+
+        td { padding: 15px; border-bottom: 1px solid var(--glass-border); color: #bbb; }
+
+        /* Timeline */
+        .timeline { position: relative; padding-left: 30px; border-left: 3px solid var(--primary); margin: 20px 0; }
+
+        .timeline-item { position: relative; margin-bottom: 30px; padding-left: 20px; }
+
+        .timeline-item::before {
+            content: ''; position: absolute; left: -41px; top: 5px;
+            width: 18px; height: 18px; background: var(--primary); border-radius: 50%;
+        }
+
+        /* Plataformas */
+        .platforms { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+
+        .platform {
+            background: var(--glass); padding: 20px; border-radius: 15px; 
+            text-align: center; min-width: 140px;
+        }
+
+        /* Equipo */
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+
+        .team-member { background: var(--glass); padding: 20px; border-radius: 15px; text-align: center; }
+
+        .team-avatar {
+            width: 60px; height: 60px; background: linear-gradient(135deg, var(--secondary), var(--primary));
+            border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; color: #000;
+        }
+
+        footer { background: #0d0d1a; padding: 40px; text-align: center; border-top: 1px solid var(--glass-border); }
+
+        @media (max-width: 768px) { .nav-links { display: none; } }
+    </style>
+</head>
+<body>
+
+    <div id="particles-js"></div>
+
+    <header>
+        <nav>
+            <a href="#" class="logo">🎰 Soul Gamble</a>
+            <ul class="nav-links">
+                <li><a href="#producto">Producto</a></li>
+                <li><a href="#atributos">Atributos</a></li>
+                <li><a href="#precio">Precio</a></li>
+                <li><a href="#distribucion">Distribución</a></li>
+                <li><a href="#comunicacion">Comunicación</a></li>
+                <li><a href="#equipo">Equipo</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div data-aos="zoom-out">
+            <h1>Soul Gamble</h1>
+            <p class="subtitle">The Odds Are Objects</p>
+            <div class="slogan">"Esquiva pisotones, huye de las ratas, recupera tu alma."</div>
+            <p style="max-width: 800px; margin: 0 auto 40px; color: #bbb;">
+                Un juego multijugador donde los personajes pierden su alma tras una apuesta fallida en un casino contra un mago sicario. Como castigo, el mago los convierte en objetos cotidianos: frutas, gafas, patatas o incluso fichas de casino. ¡Completa misiones llenas de obstáculos para recuperar tu alma!
+            </p>
+            <a href="#" class="logo" style="background: var(--primary); color: #000; padding: 15px 30px; border-radius: 50px; text-transform: uppercase; font-weight: bold;">🛒 Comprar - 6,70€</a>
+        </div>
+    </section>
+
+    <section id="producto">
+        <h2 class="section-title" data-aos="fade-up">🎲 Estrategia de Producto</h2>
+        <div class="cards-grid">
+            <div class="card" data-aos="fade-up">
+                <h3>🎰 Descripción del Juego</h3>
+                <p>Las partidas duran entre 35 y 40 minutos y se dividen en fases que transcurren en escenarios aleatorios dentro de un centro comercial: el casino principal, un supermercado, una tienda de ropa... Cada partida es diferente, con mapas y objetivos que cambian constantemente.</p>
+            </div>
+            <div class="card" data-aos="fade-up" data-aos-delay="100">
+                <h3>💎 Propuesta de Valor</h3>
+                <p>Este videojuego es la excusa perfecta para reunir a amigos y familiares en torno a momentos de pura diversión y desconexión. La mejor experiencia party game del mercado.</p>
+            </div>
+            <div class="card" data-aos="fade-up" data-aos-delay="200">
+                <h3>🎯 Necesidades que Resuelve</h3>
+                <p>El mercado de los Party Games está en pleno auge. Nuestro juego capitaliza los aspectos positivos de las inspiraciones del género y es muy "streamable", lo cual ayuda a su difusión.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="atributos" data-aos="fade-right">
+        <h2 class="section-title">⚡ Atributos del Videojuego</h2>
+        <div class="attributes-list">
+            <div class="attribute-item"><span>👥</span><strong>Multijugador Híbrido:</strong> Local y en línea</div>
+            <div class="attribute-item"><span>💾</span><strong>Distribución Digital:</strong> 100% digital</div>
+            <div class="attribute-item"><span>🔄</span><strong>Soporte Continuo:</strong> Actualizaciones constantes</div>
+            <div class="attribute-item"><span>🎃</span><strong>Eventos Estacionales:</strong> Navidad, Halloween, Verano</div>
+            <div class="attribute-item"><span>🖥️</span><strong>Multiplataforma:</strong> PC y Consolas</div>
+            <div class="attribute-item"><span>🛠️</span><strong>Steam Workshop:</strong> Soporte completo de mods</div>
+        </div>
+    </section>
+
+    <section id="precio">
+        <h2 class="section-title" data-aos="fade-up">💰 Estrategia de Precios</h2>
+        <div class="card" style="text-align: center; margin-bottom: 40px;" data-aos="zoom-in">
+            <p style="color: var(--primary); font-size: 4rem; font-weight: bold;">6,70€</p>
+            <p>Estrategia de Penetración de Lanzamiento</p>
+        </div>
+        <div class="cards-grid">
+            <div class="card">
+                <h3>📈 Método de Fijación</h3>
+                <p>En función de la demanda del mercado. Primero fijamos un precio fijo para el videojuego y según las ventas pondremos el juego en oferta.</p>
+            </div>
+            <div class="card">
+                <h3>🚀 Etapa de Lanzamiento</h3>
+                <p>Estrategia de penetración para entrar rápidamente al mercado y vender muchas copias con la novedad y la publicidad.</p>
+            </div>
+            <div class="card">
+                <h3>🔄 Etapas Posteriores</h3>
+                <p>Estrategia de precios dinámicos. Cuando los jugadores empiecen a bajar, ajustaremos el precio y pondremos ofertas para recuperarlos.</p>
+            </div>
+        </div>
+        <div class="table-container" data-aos="fade-up">
+            <table>
+                <tr><th>Estrategia</th><th>Justificación</th></tr>
+                <tr><td><strong>Penetración</strong></td><td>Con un precio bajo de 6,70€ podremos asegurarnos de ganar una gran cuota de mercado y obtener una base de jugadores sólida.</td></tr>
+                <tr><td><strong>Dinámicos</strong></td><td>Dependiendo del flujo de jugadores usaremos un precio dinámico ajustándonos a festividades y rebajas.</td></tr>
+            </table>
+        </div>
+    </section>
+
+    <section id="distribucion">
+        <h2 class="section-title" data-aos="fade-up">🌐 Estrategia de Distribución</h2>
+        <div class="timeline" data-aos="fade-left">
+            <div class="timeline-item">
+                <h3>🚀 Fase de Lanzamiento</h3>
+                <p>Lanzamiento simultáneo en Steam (PC) y tiendas digitales de consolas. Preventa con incentivos: cosméticos exclusivos como una "skin" de ficha de casino dorada.</p>
+            </div>
+            <div class="timeline-item">
+                <h3>📈 Fase de Crecimiento</h3>
+                <p>Fomentar mods y promocionar "Remote Play Together" en Steam para jugar con amigos gratis.</p>
+            </div>
+            <div class="timeline-item">
+                <h3>🎯 Fase de Maduración</h3>
+                <p>Eventos estacionales (Halloween, Navidad) y colaboraciones con creadores de contenido.</p>
+            </div>
+            <div class="timeline-item">
+                <h3>🔄 Fase de Declive</h3>
+                <p>Retener jugadores con pases de batalla y posibilidad de hacerlo gratuito para un re-lanzamiento.</p>
+            </div>
+        </div>
+        
+        <div class="platforms" style="margin-top: 40px;" data-aos="fade-up">
+            <div class="platform">🎮 Steam</div>
+            <div class="platform">🎯 Epic Games</div>
+            <div class="platform">🔴 Nintendo</div>
+            <div class="platform">🔵 PlayStation</div>
+            <div class="platform">🟢 Xbox Pass</div>
+        </div>
+
+        <div class="table-container" style="margin-top: 40px;">
+            <table>
+                <tr><th>Canal</th><th>Sí/No</th><th>Justificación</th></tr>
+                <tr><td>Exclusivo</td><td>❌ No</td><td>Queremos llegar a la mayoría de gente, no podemos limitarnos.</td></tr>
+                <tr><td>Intensivo</td><td>❌ No</td><td>Solo estaremos en empresas digitales, no físicas.</td></tr>
+                <tr><td>Selectivo</td><td>✅ Sí</td><td>Nos permite venderlo solo en plataformas online seleccionadas.</td></tr>
+                <tr><td>Largo</td><td>✅ Sí</td><td>Queremos el mayor alcance posible a través de intermediarios digitales.</td></tr>
+                <tr><td>Ecommerce</td><td>✅ Sí</td><td>Es nuestro principal sitio de venta: Steam, eShop, etc.</td></tr>
+            </table>
+        </div>
+    </section>
+
+    <section id="comunicacion">
+        <h2 class="section-title" data-aos="fade-up">📣 Estrategia de Comunicación</h2>
+        <div class="card" style="text-align: center; border-left: 5px solid var(--accent); margin-bottom: 30px;">
+            <h3>🎯 Target</h3>
+            <p>Jóvenes con amigos en línea y streamers, para facilitar la creación de un público consumidor.</p>
+        </div>
+        <div class="cards-grid">
+            <div class="card">
+                <h3>📢 Mensaje</h3>
+                <p>El mejor juego para divertirte con amigos y disfrutar un rato inolvidable.</p>
+            </div>
+            <div class="card">
+                <h3>✨ Eslogan</h3>
+                <p>"Esquiva pisotones, huye de las ratas, recupera tu alma."</p>
+            </div>
+        </div>
+        <div class="table-container" style="margin-top: 30px;" data-aos="fade-up">
+            <table>
+                <tr><th>Estrategia</th><th>Sí/No</th><th>Justificación</th></tr>
+                <tr><td>Promociones</td><td>✅ Sí</td><td>Descuentos para atraer jugadores e incitarlos a jugar.</td></tr>
+                <tr><td>Venta Personal</td><td>❌ No</td><td>No se venderá presencialmente.</td></tr>
+                <tr><td>Publicidad Tradicional</td><td>❌ No</td><td>No usaremos medios tradicionales (TV/Radio).</td></tr>
+                <tr><td>Publicidad Digital</td><td>✅ Sí</td><td>Promoción en redes sociales y página web propia.</td></tr>
+                <tr><td>Relaciones Públicas</td><td>✅ Sí</td><td>Regalar el juego a influencers para que lo publiquen.</td></tr>
+            </table>
+        </div>
+    </section>
+
+    <section id="equipo">
+        <h2 class="section-title">👥 Nuestro Equipo</h2>
+        <div class="team-grid">
+            <div class="team-member" data-aos="fade-up">
+                <div class="team-avatar">DP</div>
+                <h4>David Pineda Sánchez</h4>
+                <p style="font-size: 0.8rem; color: #888;">Desarrollador</p>
+            </div>
+            <div class="team-member" data-aos="fade-up" data-aos-delay="100">
+                <div class="team-avatar">JB</div>
+                <h4>Johan Damian Bassotti</h4>
+                <p style="font-size: 0.8rem; color: #888;">Desarrollador</p>
+            </div>
+            <div class="team-member" data-aos="fade-up" data-aos-delay="200">
+                <div class="team-avatar">IG</div>
+                <h4>Ivan Grande Domínguez</h4>
+                <p style="font-size: 0.8rem; color: #888;">Desarrollador</p>
+            </div>
+            <div class="team-member" data-aos="fade-up" data-aos-delay="300">
+                <div class="team-avatar">NM</div>
+                <h4>Nil Márquez Cano</h4>
+                <p style="font-size: 0.8rem; color: #888;">Desarrollador</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Soul Gamble: The Odds Are Objects. Todos los derechos reservados.</p>
+        <p>JESUÏTES Bellvitge - Centre d'Estudis Joan XXIII</p>
+        <p style="font-size: 0.8rem; margin-top: 10px; opacity: 0.6;">Imagen de carátula creada con IA (Gemini)</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+        
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 60 },
+                "color": { "value": "#ffd700" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.2 },
+                "size": { "value": 3 },
+                "line_linked": { "enable": true, "distance": 150, "color": "#9b59b6", "opacity": 0.1, "width": 1 },
+                "move": { "enable": true, "speed": 1.5 }
+            },
+            "interactivity": { "events": { "onhover": { "enable": true, "mode": "repulse" } } }
+        });
+    </script>
+</body>
+</html>
